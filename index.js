@@ -1,17 +1,26 @@
 var five = require("johnny-five"),
     // or "./lib/johnny-five" when running from the source
-    board = new five.Board();
+    board = new five.Board(),
+    button;
+
 
 board.on("ready", function() {
+  var led = new five.Led(3)
+  var button = new five.Button(8);
 
-  // Create an Led on pin 13 and strobe it on/off
-  // Optionally set the speed; defaults to 100ms
-  // (new five.Led(13)).strobe();
-  var led = new five.Led(13)
-  led.blink();
+  // led.blink();
 
   this.repl.inject({
-  	led: led
-  })
+  	led: led,
+  	button: button
+  });
+
+  button.on('up', function(){
+  	led.off();
+  });
+
+  button.on('hold', function(){
+	led.on();
+  });
 
 });
